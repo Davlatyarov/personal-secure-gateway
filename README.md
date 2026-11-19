@@ -93,9 +93,11 @@ chmod +x deploy.sh
 
 The script will automatically:
 - Verify Docker and Docker Compose.
-- Free up port 53 from Ubuntu's default `systemd-resolved` stub resolver safely.
-- Launch AdGuard Home pre-configured with all security policies.
-- Display the Web Dashboard URL (`http://<SERVER_IP>:8080`).
+- Launch AdGuard Home pre-configured with all security policies (no changes to host system settings).
+- Display the Web Dashboard URL (`http://<SERVER_IP>:3080`).
+
+After the first start DNS answers nobody: add your device IPs in the dashboard
+(Settings -> DNS settings -> Access settings -> Allowed clients). See `CHANGES.md`.
 
 ---
 

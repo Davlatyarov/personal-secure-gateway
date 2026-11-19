@@ -1,3 +1,8 @@
+# Based on github.com/Davlatyarov/personal-secure-gateway @ ff3661b
+# Changes for this server (HestiaCP):
+#  - admin UI on host port 3080: 8080 is taken by Apache (Hestia backend)
+#  - Docker log rotation so container logs can't fill the disk
+#  - DNS access list is in conf/AdGuardHome.yaml (dns.allowed_clients)
 services:
   adguardhome:
     image: adguard/adguardhome:latest
@@ -11,9 +16,9 @@ services:
         reservations:
           memory: 64M
     ports:
-      # Web Admin UI on custom port 8080 (safe, doesn't touch port 80/443 used by Nginx/Hestia)
-      - "8080:8080/tcp"
-      # DNS Resolver (Standard Port 53)
+      # Web Admin UI: host 3080 -> container 8080
+      - "3080:8080/tcp"
+      # DNS
       - "53:53/tcp"
       - "53:53/udp"
     volumes:
@@ -21,3 +26,8 @@ services:
       - ./conf:/opt/adguardhome/conf
     environment:
       - TZ=Asia/Tashkent
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

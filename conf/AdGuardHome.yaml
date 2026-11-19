@@ -16,6 +16,12 @@ dns:
   bind_hosts:
     - 0.0.0.0
   port: 53
+  # Docker publishes port 53 bypassing the Hestia firewall, so access is limited here.
+  # Nobody is allowed by default: add your device IPs in the web UI
+  # (Settings -> DNS settings -> Access settings -> Allowed clients).
+  allowed_clients:
+    - 127.0.0.1
+  disallowed_clients: []
   anonymize_client_ip: false
   ratelimit: 30
   ratelimit_subnet_len_ipv4: 24
