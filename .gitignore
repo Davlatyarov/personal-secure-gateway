@@ -1,5 +1,17 @@
-# Working data and logs
+# Working data and runtime logs
 work/
 *.log
 *.tmp
 .DS_Store
+__pycache__/
+*.pyc
+
+# Cryptographic keys and certificates (Never commit private keys or secrets!)
+*.key
+*.pem
+*.crt
+*.ca
+account.key
+acme_state.json
+wildcard_privkey.pem
+wildcard_fullchain.pem
