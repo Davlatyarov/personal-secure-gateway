@@ -1,0 +1,5 @@
+# Working data and logs
+work/
+*.log
+*.tmp
+.DS_Store

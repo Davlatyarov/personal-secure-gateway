@@ -1,0 +1,116 @@
+http:
+  pprof:
+    port: 6060
+    enabled: false
+  address: 0.0.0.0:8080
+  session_ttl: 30d
+users:
+  - name: Str4nge
+    password: $2a$10$W7fgPllZ6/QKR4mKj0iscukob6585LtgP9ERN.rNMZ6Od2p7Yl5qK
+auth_attempts: 5
+block_auth_min: 15
+http_proxy: ""
+language: ru
+theme: auto
+dns:
+  bind_hosts:
+    - 0.0.0.0
+  port: 53
+  anonymize_client_ip: false
+  ratelimit: 30
+  ratelimit_subnet_len_ipv4: 24
+  ratelimit_subnet_len_ipv6: 56
+  refuse_any: true
+  upstream_dns:
+    - https://dns.quad9.net/dns-query
+    - https://security.cloudflare-dns.com/dns-query
+    - https://dns.adguard-dns.com/dns-query
+  bootstrap_dns:
+    - 9.9.9.10
+    - 149.112.112.10
+    - 1.1.1.2
+    - 1.0.0.2
+  upstream_mode: parallel
+  fastest_timeout: 1s
+  cache_enabled: true
+  cache_size: 4194304
+  cache_ttl_min: 0
+  cache_ttl_max: 0
+  cache_optimistic: true
+  cache_optimistic_answer_ttl: 30s
+  cache_optimistic_max_age: 12h
+  aaaa_disabled: false
+  enable_dnssec: true
+  max_goroutines: 300
+  handle_ddr: true
+  upstream_timeout: 10s
+  serve_plain_dns: true
+  hostsfile_enabled: true
+tls:
+  enabled: false
+querylog:
+  dir_path: ""
+  ignored: []
+  interval: 90d
+  size_memory: 1000
+  enabled: true
+  ignored_enabled: false
+  file_enabled: true
+statistics:
+  dir_path: ""
+  ignored: []
+  interval: 1d
+  enabled: true
+  ignored_enabled: false
+filters:
+  - enabled: true
+    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+    name: AdGuard DNS filter
+    id: 1
+  - enabled: true
+    url: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
+    name: HaGeZi Multi PRO (Security & Privacy)
+    id: 1795078303
+  - enabled: true
+    url: https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh.txt
+    name: URLhaus - Malware & C2 Filter
+    id: 1795078304
+  - enabled: true
+    url: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/gambling.txt
+    name: Anti-Gambling & Betting Apps Block
+    id: 1795078305
+whitelist_filters: []
+user_rules:
+  - '||1xbet.*^'
+  - '||1x-bet.*^'
+  - '||mostbet.*^'
+  - '||melbet.*^'
+  - '||1win.*^'
+  - '||linebet.*^'
+  - '||betwinner.*^'
+  - '||pin-up.*^'
+  - '||fonbet.*^'
+  - '||parimatch.*^'
+  - '||bet365.*^'
+  - '||olimpbet.*^'
+  - '||vavada.*^'
+  - '! Anti-Bypass: Firefox Canary'
+  - '||use-application-dns.net^'
+  - '! Anti-Bypass: Apple iCloud Private Relay'
+  - '||mask.icloud.com^'
+  - '||mask-h2.icloud.com^'
+  - '! Anti-Bypass: Public DoH Providers'
+  - '||dns.google^'
+  - '||cloudflare-dns.com^'
+  - '||one.one.one.one^'
+  - '||dns.quad9.net^'
+filtering:
+  blocking_mode: default
+  parental_block_host: family-block.dns.adguard.com
+  safebrowsing_block_host: standard-block.dns.adguard.com
+  filtering_enabled: true
+  rewrites_enabled: true
+  parental_enabled: true
+  safebrowsing_enabled: true
+  protection_enabled: true
+schema_version: 34
