@@ -3,7 +3,19 @@ services:
     image: adguard/adguardhome:latest
     container_name: adguardhome
     restart: unless-stopped
-    network_mode: "host"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          memory: 64M
+    ports:
+      # Web Admin UI on custom port 8080 (safe, doesn't touch port 80/443 used by Nginx/Hestia)
+      - "8080:8080/tcp"
+      # DNS Resolver (Standard Port 53)
+      - "53:53/tcp"
+      - "53:53/udp"
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf

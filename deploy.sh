@@ -2,7 +2,8 @@
 # ==============================================================================
 # Project: Personal Secure Gateway & DNS Firewall (AdGuard Home + Docker)
 # Author: Muhammadqodir Davlatyorov
-# Purpose: Automated 1-Click Deployment for Linux VPS (Ubuntu / Debian)
+# Purpose: Non-invasive, resource-constrained container deployment
+# Safe for shared VPS environments (HestiaCP / cPanel / Plesk friendly)
 # ==============================================================================
 
 set -e
@@ -14,36 +15,21 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${BLUE}======================================================${NC}"
-echo -e "${GREEN}   Personal Secure Gateway - Automated Deployment     ${NC}"
+echo -e "${GREEN}   Personal Secure Gateway - Safe Docker Deployment   ${NC}"
 echo -e "${BLUE}======================================================${NC}"
 
 # Check Docker installation
 if ! command -v docker &> /dev/null; then
     echo -e "${RED}[ERROR] Docker is not installed.${NC}"
-    echo -e "${YELLOW}Please install Docker first: curl -fsSL https://get.docker.com | sh${NC}"
+    echo -e "${YELLOW}Please install Docker: curl -fsSL https://get.docker.com | sh${NC}"
     exit 1
 fi
 
-# Fix Port 53 conflict on Ubuntu / Debian (systemd-resolved)
-if ss -tuln | grep -q ':53 '; then
-    echo -e "${YELLOW}[!] Port 53 is currently occupied. Releasing port 53 from systemd-resolved...${NC}"
-    sudo mkdir -p /etc/systemd/resolved.conf.d/
-    sudo tee /etc/systemd/resolved.conf.d/adguard.conf > /dev/null <<EOF
-[Resolve]
-DNS=1.1.1.1 9.9.9.9
-DNSStubListener=no
-EOF
-    sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf || true
-    sudo systemctl restart systemd-resolved || true
-    sleep 2
-    echo -e "${GREEN}[OK] Port 53 successfully released!${NC}"
-fi
-
-# Ensure directory permissions
+# Ensure directories exist and have proper permissions
 mkdir -p ./work ./conf
 chmod -R 755 ./conf ./work
 
-echo -e "${BLUE}[*] Starting AdGuard Home container...${NC}"
+echo -e "${BLUE}[*] Pulling and starting isolated container (Max RAM: 256MB)...${NC}"
 docker compose pull
 docker compose up -d
 
@@ -51,10 +37,14 @@ SERVER_IP=$(curl -s -4 https://ifconfig.me || hostname -I | awk '{print $1}')
 
 echo ""
 echo -e "${GREEN}======================================================${NC}"
-echo -e "${GREEN} [SUCCESS] Secure Gateway is successfully deployed!   ${NC}"
+echo -e "${GREEN} [SUCCESS] AdGuard Home container is running safely!  ${NC}"
 echo -e "${GREEN}======================================================${NC}"
 echo -e "Web Dashboard : ${BLUE}http://${SERVER_IP}:8080${NC}"
 echo -e "Login         : ${YELLOW}Str4nge${NC}"
-echo -e "DNS IP        : ${YELLOW}${SERVER_IP}${NC} (Port 53 TCP/UDP)"
-echo -e "Active Blocks : ${GREEN}Anti-Gambling, C2 Malware, DoH Bypass, Telemetry${NC}"
+echo -e "Memory Limit  : ${GREEN}256 MB (Hard Cap)${NC}"
+echo -e "CPU Limit     : ${GREEN}0.25 vCPU (Hard Cap)${NC}"
+echo -e "Web Ports     : ${GREEN}Port 8080 (Port 80 & 443 are untouched!)${NC}"
+echo -e "${GREEN}======================================================${NC}"
+echo -e "${YELLOW}[NOTE for HestiaCP users]:${NC}"
+echo -e "If your server firewall blocks inbound traffic, allow port 8080 (TCP) and 53 (UDP) in HestiaCP Firewall."
 echo -e "${GREEN}======================================================${NC}"

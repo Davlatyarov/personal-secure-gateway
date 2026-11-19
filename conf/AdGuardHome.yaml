@@ -33,26 +33,26 @@ dns:
   upstream_mode: parallel
   fastest_timeout: 1s
   cache_enabled: true
-  cache_size: 4194304
+  cache_size: 2097152
   cache_ttl_min: 0
   cache_ttl_max: 0
   cache_optimistic: true
   cache_optimistic_answer_ttl: 30s
   cache_optimistic_max_age: 12h
-  aaaa_disabled: false
+  aaaa_disabled: true
   enable_dnssec: true
-  max_goroutines: 300
+  max_goroutines: 150
   handle_ddr: true
   upstream_timeout: 10s
   serve_plain_dns: true
-  hostsfile_enabled: true
+  hostsfile_enabled: false
 tls:
   enabled: false
 querylog:
   dir_path: ""
   ignored: []
-  interval: 90d
-  size_memory: 1000
+  interval: 30d
+  size_memory: 500
   enabled: true
   ignored_enabled: false
   file_enabled: true
