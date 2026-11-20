@@ -59,15 +59,15 @@ tls:
 querylog:
   dir_path: ""
   ignored: []
-  interval: 24h
-  size_memory: 500
+  interval: 30d
+  size_memory: 1000
   enabled: true
   ignored_enabled: false
   file_enabled: true
 statistics:
   dir_path: ""
   ignored: []
-  interval: 24h
+  interval: 30d
   enabled: true
   ignored_enabled: false
 filters:
