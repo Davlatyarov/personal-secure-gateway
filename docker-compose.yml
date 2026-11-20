@@ -7,17 +7,17 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: 256M
+          cpus: '1.0'
+          memory: 512M
         reservations:
-          memory: 64M
+          memory: 128M
     ports:
       # Web Admin UI: host 3080 -> container 8080
       - "3080:8080/tcp"
-      # Plain DNS (UDP/TCP Port 53)
-      - "53:53/tcp"
-      - "53:53/udp"
-      # DNS-over-TLS (DoT Port 853) for Android Private DNS
+      # Plain DNS bound to localhost (prevents public internet bot attacks)
+      - "127.0.0.1:53:53/tcp"
+      - "127.0.0.1:53:53/udp"
+      # DNS-over-TLS (DoT Port 853) for Android Private DNS & encrypted clients
       - "853:853/tcp"
       - "853:853/udp"
     volumes:
