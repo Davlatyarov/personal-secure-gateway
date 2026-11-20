@@ -27,9 +27,9 @@ Developed by **Muhammadqodir Davlatyorov** (BSc Cybersecurity Student at Interna
 | Linux VPS Host (79.132.143.211)                                                                    |
 |                                                                                                    |
 |   +--------------------------------------------------------------------------------------------+   |
-|   | AdGuard Home Docker Engine (Hard resource caps: 256MB RAM / 0.25 vCPU)                     |   |
+|   | AdGuard Home Docker Engine (Hard resource caps: 512MB RAM / 1.0 vCPU)                      |   |
 |   |                                                                                            |   |
-|   |  [Inbound: Port 53 UDP/TCP | Port 853 DoT/TLS | Port 3080 Web UI]                          |   |
+|   |  [Inbound: Port 853 DoT/TLS | Port 3080 Web UI]                                            |   |
 |   |         |                                                                                  |   |
 |   |         v                                                                                  |   |
 |   |  +--------------------------------------------------------------------------------------+  |   |
@@ -48,66 +48,54 @@ Developed by **Muhammadqodir Davlatyorov** (BSc Cybersecurity Student at Interna
 |   |  |  - Anti-Bypass Enforcer (Canary drops for Apple PR, Mozilla, and Public DoH)        |  |   |
 |   |  +--------------------------------------------------------------------------------------+  |   |
 |   |         |                                                  |                               |   |
-|   |         | (Betting / Mirrors / C2 / Trackers)              | (Legitimate Queries)          |   |
+|   |         | (Threat Sinkholed -> 0.0.0.0)                    | (Legitimate Queries)          |   |
 |   |         v                                                  v                               |   |
-|   |    [ 0.0.0.0 Sinkhole ]                          [ Parallel Secure Upstreams ]             |   |
-|   |    Instant Drop (0.1ms)                                    |                               |   |
-|   +------------------------------------------------------------|-------------------------------+   |
-+----------------------------------------------------------------|-----------------------------------+
-                                                                 |
-                                 +-------------------------------+-------------------------------+
-                                 |                                                               |
-                                 v                                                               v
-                    [ Quad9: 9.9.9.9 / DoH ]                                 [ Cloudflare Security: 1.1.1.2 / DoH ]
-                    (Threat Shield & Privacy)                                 (Malware-Blocking Resolver)
+|   |  +----------------------+             +-------------------------------------------------+  |   |
+|   |  | Null Route (0.0.0.0) |             | Parallel Encrypted Upstreams (Quad9 / Cloudfl.) |  |   |
+|   |  +----------------------+             +-------------------------------------------------+  |   |
+|   +--------------------------------------------------------------------------------------------+   |
++----------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## Core Security Features
+## Key Features
 
-1. **Complete Betting & Gambling Ecosystem Neutralization:**
-   - Universal substring containment rules (`*1xbet*`, `*1x-bet*`, `*1xlite*`, `*mostbet*`, `*melbet*`, `*1win*`, `*linebet*`, etc.).
-   - Neutralizes dynamic mirrors (DGA) by targeting **backbone delivery networks** (`*traincdn*`, `*cdn-global-mb*`, `*x011bt*`). Even newly registered mirror domains fail to load stylesheets, APIs, odds, and balances.
-   - Blocks mobile APK telemetry and attribution SDKs (`*appsflyersdk*`).
+1. **Zero-Trust Gambling & Threat Sinkholing:**
+   * Comprehensive blocking covering major bookmakers (`1xbet`, `mostbet`, `melbet`, `1win`, `linebet`, `pin-up`, `fonbet`, `parimatch`, `bet365`, `leon`).
+   * Blocks betting content delivery networks (`traincdn.com`, `cdn-global-mb.com`, `playstarthere.com`).
+   * Dynamic wildcard regex matching preventing domain hopping/mirror evasion.
 
-2. **Wildcard Cryptographic Infrastructure (DNS-over-TLS):**
-   - Official **Let's Encrypt Wildcard Certificate** (`*.dns.davlatyarov.uz` + `dns.davlatyarov.uz`) issued via automated ACME v2 DNS-01 verification.
-   - Zero-trust encrypted communication over port 853 across all mobile 4G and public Wi-Fi networks.
+2. **DNS-over-TLS (DoT) with Wildcard SSL:**
+   * Automated Let's Encrypt ACME v2 DNS-01 verification via Eskiz.uz API.
+   * Wildcard certificate for `*.dns.davlatyarov.uz` and `dns.davlatyarov.uz`.
+   * Secure, tamper-proof DNS queries encrypted against ISP inspection.
 
 3. **Per-Device SNI Client Profiling:**
-   - Utilizes TLS Server Name Indication (SNI) to identify individual clients independently of changing mobile IP addresses.
-   - Individual monitoring and customized access policies for different devices (`safe.dns...`, `s21.dns...`).
+   * Custom policies routed by TLS SNI hostname (`safe.dns.davlatyarov.uz`, `s21.dns.davlatyarov.uz`, `brother.dns.davlatyarov.uz`).
+   * Zero client software required on Android (native Private DNS support).
 
-4. **Anti-Circumvention & Anti-Evasion Countermeasures:**
-   - **Mozilla Firefox Canary:** Blocks `use-application-dns.net` to enforce system DNS.
-   - **Apple iCloud Private Relay Canary:** Blocks `mask.icloud.com` to prevent uninspected traffic tunneling.
-   - **Public DoH Block:** Blocks `dns.google`, `cloudflare-dns.com` to prevent browser DNS hijacking.
-   - **IPv6 Leak Defense:** Hardened against multi-homed local router IPv6 leaks.
-
-5. **Resource-Constrained Production Deployment:**
-   - Docker container hard-capped at 256MB RAM and 0.25 vCPU with strict log rotation policies to co-exist alongside existing production web stacks (HestiaCP).
-   - In-memory optimistic caching providing average response times under 2ms.
+4. **Resource Hardening & Shared Host Safety:**
+   * Container CPU cap (`1.0 vCPU`) and memory cap (`512MB RAM`).
+   * Non-invasive port design: port 53 is unmapped on the host to eliminate external DNS Amplification DDoS vectors and preserve compatibility with shared VPS panels (HestiaCP, cPanel).
 
 ---
 
-## Client Connection Guide
+## Client Setup Instructions
 
-### 1. Android Smartphone (Native OS-wide DoT)
-* Go to **Settings** ➔ **Connections** ➔ **More connection settings** ➔ **Private DNS**.
-* Select **Private DNS provider hostname** and enter:
+### 1. Android (Samsung Galaxy, Google Pixel, Xiaomi, etc.)
+* Open **Settings** ➔ **Connections** ➔ **More connection settings** ➔ **Private DNS**.
+* Select **Private DNS provider hostname**.
+* Enter your assigned secure DoT endpoint:
   ```text
-  safe.dns.davlatyarov.uz
+  s21.dns.davlatyarov.uz
   ```
-  *(or `dns.davlatyarov.uz`)*
-* Once saved, Android automatically routes all app and browser traffic through the encrypted gateway.
+  *(or `safe.dns.davlatyarov.uz`)*
+* Save. All device traffic is instantly protected.
 
 ### 2. Windows 11 / 10
-* Open **Settings** ➔ **Network & internet** ➔ **Wi-Fi** (or **Ethernet**) ➔ **Hardware properties**.
-* Set **DNS server assignment** to **Manual**:
-  * **IPv4 Preferred DNS:** `79.132.143.211`
-  * **IPv4 Alternate DNS:** `9.9.9.9`
-* *(Optional)* If browser Secure DNS is enabled, set Chrome/Edge Secure DNS to *"Use current service provider"*.
+* Open **Settings** ➔ **Network & internet** ➔ **Wi-Fi** (or **Ethernet**).
+* Set DNS to your secure DoT / DNS gateway.
 
 ---
 
@@ -116,27 +104,8 @@ Developed by **Muhammadqodir Davlatyorov** (BSc Cybersecurity Student at Interna
 Verify that the gateway actively sinkholes threats:
 
 ```powershell
-# Betting Domain Sinkhole Test (Expected: 0.0.0.0)
-Resolve-DnsName 1x-bet-uz.mobi -Server 79.132.143.211
-
-# Dynamic Mirror Sinkhole Test (Expected: 0.0.0.0)
-Resolve-DnsName 1xlite-52092.pro -Server 79.132.143.211
-
-# Legitimate Domain Test (Expected: Valid Public IP)
-Resolve-DnsName google.com -Server 79.132.143.211
+python scripts/verify_gateway.py
 ```
-
----
-
-## WireGuard VPN Integration (wg-easy)
-
-The gateway includes an integrated **WireGuard VPN** tunnel (`wg-easy`) operating inside an isolated Docker bridge network (`gateway`: `172.28.0.0/24`).
-
-### Key Benefits
-* **Full Tunnel Encryption:** Routes 100% of network traffic through the VPS with wire-speed ChaCha20-Poly1305 encryption.
-* **Internal DNS Resolution:** All VPN clients (`10.8.0.0/24`) automatically query the internal AdGuard Home instance (`172.28.0.10:53`) with zero exposure to public plain DNS.
-* **Hardened Admin UI:** The wg-easy web management interface is bound strictly to `127.0.0.1:51821` (accessible via secure SSH port forwarding: `ssh -L 51821:127.0.0.1:51821 root@<server_ip>`).
-* **Non-Invasive:** Leaves host port 53 completely unmapped and safe for HestiaCP/systemd services.
 
 ---
 
@@ -144,14 +113,14 @@ The gateway includes an integrated **WireGuard VPN** tunnel (`wg-easy`) operatin
 
 ```
 personal-secure-gateway/
-├── docker-compose.yml     # Production multi-container manifest (AdGuard + WireGuard)
-├── deploy.sh              # Automated deployment script with .env initialization
-├── verify.sh              # Health check and post-deployment verification script
-├── .env.example           # Secure configuration template
+├── docker-compose.yml     # Hardened AdGuard Home container deployment
+├── deploy.sh              # Automated deployment script for Linux VPS
 ├── conf/
 │   └── AdGuardHome.yaml   # Hardened configuration with preloaded security rules
-├── work/                  # AdGuard runtime data directory
-├── wg/                    # WireGuard cryptographic configurations and client profiles
+├── scripts/
+│   ├── verify_gateway.py  # 6-point verification suite (TLS + Sinkhole tests)
+│   └── acme_wildcard.py   # ACME DNS-01 Let's Encrypt automation
+├── work/                  # Runtime database directory
 └── README.md              # Engineering documentation
 ```
 
