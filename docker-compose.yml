@@ -14,9 +14,6 @@ services:
     ports:
       # Web Admin UI: host 3080 -> container 8080
       - "3080:8080/tcp"
-      # Plain DNS bound to localhost (prevents public internet bot attacks)
-      - "127.0.0.1:53:53/tcp"
-      - "127.0.0.1:53:53/udp"
       # DNS-over-TLS (DoT Port 853) for Android Private DNS & encrypted clients
       - "853:853/tcp"
       - "853:853/udp"
