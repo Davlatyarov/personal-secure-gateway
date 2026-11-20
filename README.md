@@ -128,15 +128,30 @@ Resolve-DnsName google.com -Server 79.132.143.211
 
 ---
 
+## WireGuard VPN Integration (wg-easy)
+
+The gateway includes an integrated **WireGuard VPN** tunnel (`wg-easy`) operating inside an isolated Docker bridge network (`gateway`: `172.28.0.0/24`).
+
+### Key Benefits
+* **Full Tunnel Encryption:** Routes 100% of network traffic through the VPS with wire-speed ChaCha20-Poly1305 encryption.
+* **Internal DNS Resolution:** All VPN clients (`10.8.0.0/24`) automatically query the internal AdGuard Home instance (`172.28.0.10:53`) with zero exposure to public plain DNS.
+* **Hardened Admin UI:** The wg-easy web management interface is bound strictly to `127.0.0.1:51821` (accessible via secure SSH port forwarding: `ssh -L 51821:127.0.0.1:51821 root@<server_ip>`).
+* **Non-Invasive:** Leaves host port 53 completely unmapped and safe for HestiaCP/systemd services.
+
+---
+
 ## Project Structure
 
 ```
 personal-secure-gateway/
-├── docker-compose.yml     # Production container manifest with resource limits
-├── deploy.sh              # Automated deployment script for Linux VPS
+├── docker-compose.yml     # Production multi-container manifest (AdGuard + WireGuard)
+├── deploy.sh              # Automated deployment script with .env initialization
+├── verify.sh              # Health check and post-deployment verification script
+├── .env.example           # Secure configuration template
 ├── conf/
 │   └── AdGuardHome.yaml   # Hardened configuration with preloaded security rules
-├── work/                  # Working data directory
+├── work/                  # AdGuard runtime data directory
+├── wg/                    # WireGuard cryptographic configurations and client profiles
 └── README.md              # Engineering documentation
 ```
 

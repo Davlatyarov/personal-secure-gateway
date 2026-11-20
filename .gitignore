@@ -1,7 +1,14 @@
+# Environment & Secrets
+.env
+wg/
+
 # Working data and runtime logs
 work/
+conf/*.db
+conf/sessions.db
 *.log
 *.tmp
+*.bak
 .DS_Store
 __pycache__/
 *.pyc

@@ -21,6 +21,8 @@ dns:
   # (Settings -> DNS settings -> Access settings -> Allowed clients).
   allowed_clients:
     - 127.0.0.1
+    - 172.28.0.0/24
+    - 10.8.0.0/24
   disallowed_clients: []
   anonymize_client_ip: false
   ratelimit: 30
