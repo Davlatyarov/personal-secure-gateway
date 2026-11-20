@@ -5,12 +5,13 @@ Author: Muhammadqodir Davlatyorov
 Purpose: Tests DNS sinkholing, DoT TLS handshake, and Wildcard SSL validity.
 """
 
+import os
 import socket
 import ssl
 import struct
 import sys
 
-GATEWAY_IP = "79.132.143.211"
+GATEWAY_IP = os.getenv("GATEWAY_IP", "<SERVER_IP>")
 DOT_PORT = 853
 TEST_HOSTNAMES = [
     "dns.davlatyarov.uz",

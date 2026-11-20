@@ -25,8 +25,11 @@ import josepy as jose
 DIRECTORY_URL = "https://acme-v02.api.letsencrypt.org/directory"
 EMAIL = "davlatyarov@gmail.com"
 DOMAINS = ["dns.davlatyarov.uz", "*.dns.davlatyarov.uz"]
-ADGUARD_API = "http://79.132.143.211:3080/control/tls/configure"
-ADGUARD_AUTH = ("Str4nge", "Salom1505!")
+ADGUARD_HOST = os.getenv("GATEWAY_IP", "<SERVER_IP>")
+ADGUARD_API = f"http://{ADGUARD_HOST}:3080/control/tls/configure"
+ADGUARD_USER = os.getenv("ADGUARD_USER", "admin")
+ADGUARD_PASS = os.getenv("ADGUARD_PASS", "change_me_to_strong_password")
+ADGUARD_AUTH = (ADGUARD_USER, ADGUARD_PASS)
 
 WORKDIR = os.path.dirname(os.path.abspath(__file__))
 KEY_FILE = os.path.join(WORKDIR, "account.key")
