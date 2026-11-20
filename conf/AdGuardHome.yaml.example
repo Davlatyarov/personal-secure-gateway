@@ -5,8 +5,8 @@ http:
   address: 0.0.0.0:8080
   session_ttl: 30d
 users:
-  - name: Str4nge
-    password: $2a$10$W7fgPllZ6/QKR4mKj0iscukob6585LtgP9ERN.rNMZ6Od2p7Yl5qK
+  - name: admin
+    password: $2a$10$EXAMPLEPLACEHOLDERBCRYPTHASHCHANGEME
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""

@@ -24,7 +24,7 @@ Developed by **Muhammadqodir Davlatyorov** (BSc Cybersecurity Student at Interna
                                                      | [Encrypted DNS-over-TLS / Port 853]
                                                      v
 +----------------------------------------------------------------------------------------------------+
-| Linux VPS Host (79.132.143.211)                                                                    |
+| Linux VPS Host (<SERVER_IP>)                                                                    |
 |                                                                                                    |
 |   +--------------------------------------------------------------------------------------------+   |
 |   | AdGuard Home Docker Engine (Hard resource caps: 512MB RAM / 1.0 vCPU)                      |   |
